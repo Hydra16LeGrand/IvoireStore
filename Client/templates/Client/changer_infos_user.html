@@ -1,0 +1,67 @@
+{% extends 'static_client_dashboard.html' %}
+{% load static %}
+
+{% block static_client_dashboard %}
+	
+	<div class="card">
+	    <div class="card-body">
+	     	<div class="row">
+	     		<div class="col-md-9">
+				    <form class="row" method="POST" action="{% url 'changer_infos_user' %}">
+				     	{% csrf_token %}
+				     	<div class="col-md-12">
+							<div class="form-row">
+								<div class="form-group col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+								  <label>Adresse</label>
+								  <input type="text" name="adresse" class="form-control" value="{{ user.adresse }}">
+								</div> <!-- form-group end.// -->
+							</div> <!-- form-row.// -->
+							<div class="form-row">
+								<div class="form-group col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+									<label>Email</label>
+								  	<input type="email" name="email" class="form-control" value="{{ user.user.email }}">
+								 </div>
+							</div> <!-- form-group end.// -->
+							<div class="form-row">
+								<div class="form-group col-md-6">
+								  <label>Nouveau mot de passe</label>
+								  <input id="mdp" type="password" name="mdp" class="form-control" minlength="6">
+								</div> <!-- form-group end.// -->
+								<div class="form-group col-md-6">
+								  <label>Confirmer</label>
+								  <input id="cmdp" type="password" name="c_mdp" class="form-control" minlength="6">
+								</div> <!-- form-group end.// -->
+							</div> <!-- form-row.// -->
+
+							<button type="submit" onClick="checkPw()" class="btn btn-primary">Modifier</button>
+				     	</div> <!-- col.// -->
+				    </form>
+				</div>
+		     	<div class="col-md">
+		     		<center>	
+		     			<img src="{{ user.profil }}" class="img-md rounded-circle border">
+		     		</center><br>
+		     		<form action="{% url 'changer_profil_user' %}" method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+						<input class="form-control" type="file" name="profil" required><br>
+						<center><input type="submit" value="changer profil" class="btn btn-outline-primary"></center>
+					</form>
+		     	</div>  <!-- col.// -->
+		    </div>
+	    </div> <!-- card-body.// -->
+	</div> <!-- card .// -->
+
+<script type="text/javascript">
+	function checkPw(){
+    	mdp = document.getElementById("mdp");
+		cmdp = document.getElementById("cmdp");
+
+
+		if (mdp.value != cmdp.value){
+			mdp.setCustomValidity("Les mots de passe ne correspondent pas");
+		}else{
+			mdp.setCustomValidity("");
+		}
+    }
+</script>
+{% endblock %}   

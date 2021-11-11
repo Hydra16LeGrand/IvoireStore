@@ -1,0 +1,186 @@
+{% load static %}
+{% load mes_filtres %}
+{% if message %}
+  <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+      <center>{{ message }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
+{% if message_success %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <center>{{ message_success }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+{% endif %}
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Bootstrap-ecommerce by Vosidiy M.">
+
+	<title>Ivoire Store</title>
+
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
+	<link rel="icon" type="image/png"  href="{% static 'images/mon_logo.png' %}" />
+	<!-- Bootstrap4 files-->
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+	<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+	<!-- Fonticons -->
+	<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+	<link href="{% static 'fonts/feathericons/css/iconfont.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'fonts/material-icons/css/materialdesignicons.css' %}" rel="stylesheet" type="text/css" />
+
+	<!-- custom style -->
+	<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+	<link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+
+	<!-- custom javascript -->
+	<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-192320192-1">
+	</script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-192320192-1');
+	</script>
+</head>
+<body>
+	<header class="section-header">
+		<section class="header-main border-bottom">
+			<div class="container">
+				<div class="col-12" style="height: 70px; text-align: center;">
+					<a href="{% url 'dashboard_vendeur' %}" class="brand-wrap">
+						<img height="70px" src="{% static 'images/mon_logo.png' %}">
+					</a> <!-- brand-wrap.// -->
+				</div>
+			</div> <!-- container.// -->
+		</section>
+	</header> <!-- section-header.// -->
+
+	<!-- ========================= SECTION PAGETOP ========================= -->
+	<section class="section-pagetop bg-primary">
+		<div class="container">
+			<h2 class="title-page text-white">Mon compte</h2>
+		</div> <!-- container //  -->
+	</section>
+	<!-- ========================= SECTION INTRO END// ========================= -->
+
+	<section class="section-content padding-y">
+		<div class="container">
+			<div class="row">
+				<aside class="col-md-3">
+					<ul class="list-group">
+						{% if active == "dashboard_vendeur" %}
+							<a class="list-group-item active" href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% elif active == "liste_produits_vendeur" %}
+							<a class="list-group-item " href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item active" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% elif active == "ajouter_produit_vendeur" %}
+							<a class="list-group-item " href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item active" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% elif active == "historique_paiement_vendeur" %}
+							<a class="list-group-item " href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item active" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% elif active == "parametres" %}
+							<a class="list-group-item " href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item active" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% else %}
+							<a class="list-group-item " href="{% url 'dashboard_vendeur' %}"> Dashboard  </a>
+							<a class="list-group-item" href="{% url 'liste_produits_vendeur' %}"> Liste de mes produits </a>
+							<a class="list-group-item" href="{% url 'ajouter_produit_vendeur' %}"> Ajouter produit </a>
+							<a class="list-group-item" href="{% url 'historique_paiement_vendeur' %}"> Historique des ventes </a>
+							<a class="list-group-item" href="{% url 'modifier_infos_vendeur' %}">Paramètres </a>
+							<a class="list-group-item" href="{% url 'rechercher_boutique' request.user %}">Ma boutique</a>
+						{% endif %}
+					</ul><br>
+
+					<a class="btn btn-light btn-block" href="{% url 'deconnexion_vendeur' %}"> <i class="fa fa-power-off"></i> <span class="text">Déconnexion</span> </a><br>
+				</aside> <!-- col.// -->
+
+	{% block static_vendeur %}
+	{% endblock %}
+			</div>
+		</div>
+	</section>
+	<!-- ========================= FOOTER ========================= -->
+	<footer class="section-footer border-top padding-y">
+		<div class="container">
+			<section class="row">
+				
+				<p class="col-md-3 col-12 col-sm-12 col-xl-3 float-md-right" style="text-align: center;"> 
+					&copy Copyright 2021 All rights reserved
+				</p><br>
+				<a href="{% url 'dashboard_vendeur' %}" class="col-md-5" style="text-align: center;">
+					<img style="height: 90px; width: 230px; " src="{% static 'images/mon_logo.png' %}">
+				</a><br>
+				<p class="col-md col-12 col-sm-12" style="text-align: center;">
+					<a href="#">Termes et conditions</a>
+				</p>
+			</section>
+			<section class="footer-bottom border-top row text-center">
+
+				<div class="col-md-6 col-12 col-sm-12" >
+					<p>Abonnez-vous pour ne rien rater</p>
+					<li>
+						<a href="https://www.facebook.com/baradjieshop/" target="_blank"> <i class="fab fa-facebook"></i> Facebook </a>
+					</li>
+					<li>
+						<a href="https://www.instagram.com/baradjise_shop?r=nametag" target="_blank"> <i class="fab fa-instagram"></i> Instagram </a>
+					</li>
+					<li>
+						<a href="https://wa.me/message/JWBLVZHPUB2IO1" target="_blank"> <i class="fab fa-whatsapp"></i> Whatsapp </a>
+					</li>
+					<li style="margin-left: -4px;">
+						<a href="https://t.me/baradjiseshop" target="_blank"> <i class="fab fa-telegram"></i> Telegram </a>
+					</li>
+				</div>
+				<div class="col-md-6 col-12 col-sm-12">
+					<p class="text-muted"> Contactez-nous pour une quelconque préoccupation </p>
+					<a href="{% url 'contactez-nous' %}"><span  class="px-2 mail ">IvoireStore@gmail.com</span></a><br>
+					<span  class="px-2">+225 05-56-74-85-29</span><br>
+					<span style="font-size: 0.9rem;" class="text-muted"> Developped By 
+						<a href="https://firebasestorage.googleapis.com/v0/b/projet-commerce.appspot.com/o/cv2.0.pdf?alt=media&token=5e7477ed-f3e9-4668-8833-c10111d9b371">Hydra16 & BlackSnow14</a>
+					</span><br>
+					<span class="text-muted">&copy 2021 IvoireStore </span>
+				</div>
+
+			</section>
+		</div><!-- //container -->
+	</footer>
+	<!-- ========================= FOOTER END // ========================= -->
+</body>
+</html>
+
+

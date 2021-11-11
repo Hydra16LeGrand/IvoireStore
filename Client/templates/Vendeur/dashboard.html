@@ -1,0 +1,56 @@
+{% extends 'static_vendeur.html' %}
+{% load static %}
+
+{% block static_vendeur %}
+<main class="col-md-9">
+
+		<article class="card mb-3">
+			<div class="card-body">
+				
+				<figure class="icontext">
+						<div class="icon">
+							<img class="rounded-circle img-sm border" src="{{ vendeur.profil }}">
+						</div>
+						<div class="text">
+							<strong> {{ vendeur.user.last_name }}</strong> <br> 
+							{{ vendeur.user.email }} <br> 
+							<a href="{% url 'modifier_infos_vendeur' %}" class="btn-link"> Modifier</a><br>
+						</div>
+				</figure>
+				<hr>
+				<p>
+					<i class="fa fa-map-marker text-muted"></i> &nbsp; Mon adresse:  
+					 {{ vendeur.adresse }}
+				</p>
+
+				
+
+				<article class="card-group">
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_produits }}</h5>
+							<span>Articles Existants</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_art_actif }}</h5>
+							<span>Articles Actifs</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_art_vendu }}</h5>
+							<span>Articles vendu</span>
+						</div>
+					</figure>
+					
+				</article>
+				
+
+			</div> <!-- card-body .// -->
+		</article> <!-- card.// -->
+
+	</main> <!-- col.// -->
+
+{% endblock %}

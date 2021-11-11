@@ -1,0 +1,49 @@
+{% extends 'static_vendeur.html' %}
+{% load mes_filtres %}
+{% block static_vendeur %}
+<div class="col-md-9">
+	{% for his in historiques %}
+	<article class="card order-group" style="margin-top: 5px;">
+		<header class="card-header" style="background-color: blue; color: white;">
+			<div class="row">
+				
+				<b class="d-inline-block mr-3 col-md-6 col-12 col-lg-6 col-xl-6 col-sm-12">Code Commande: {{ his.code_cmd }}</b>
+				<span class="col-md col-12 col-sm-12 col-xl col-lg">Date: {{ his.date_cmd|date:"D d M Y" }}</span>
+			</div>
+		</header>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md">
+					<h6 class="text-muted">Produit</h6>
+					<p>Titre : {{ his.libelle }}<br>
+						prix : {{ his.prix_vendeur|parse_int|virgule }}<br>
+						Quantité vendus : {{ his.quantite }}.<br>
+						{% if his.status_paiement == 'fait' %}
+						<span class="b">Montant à recevoir : {{ his.quantite|multiplication:his.prix_vendeur|parse_int|virgule }}</span>
+						{% else %}
+						<span class="b">Montant réçu : {{ his.quantite|multiplication:his.prix_vendeur|parse_int|virgule }}</span>
+						{% endif %}
+					</p><br>
+				</div>
+				<div class="col-md">
+					<h6 class="text-muted">Paiement</h6>
+					<span class="text-success">
+					    Cash à la livraison 
+					</span>
+
+					<p>livraison : {{ his.status_livraison }} <br>
+					 Paiement : {{ his.status_paiement }} <br> 
+					 Date paiement : {{ his.date_paiement }}
+					</p>
+					
+				</div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+	</article><br>
+	{% empty %}
+		<div class="col-md">
+			<h1><center>Aucune vente pour le moment</center></h1>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

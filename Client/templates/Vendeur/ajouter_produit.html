@@ -1,0 +1,66 @@
+{% extends 'static_vendeur.html' %}
+{% block static_vendeur %}
+<main class="col-md-9" style="margin-top: 15px;">
+<section class="section-content">
+			<div class="card mx-auto" style="max-width:600px;">
+				<article class="card-body">
+					<header class="mb-4">
+						<h4 class="card-title"><ins><center>Ajout de produit</center></ins></h4>
+					</header>
+					<form enctype="multipart/form-data" action="{% url 'ajouter_produit_vendeur' %}" method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="nom">Titre du produit</label>
+							<input value="{{ form.libelle }}" id="nom" name="libelle" type="text" class="form-control" placeholder="Polo Gris Hugo Boss" required>
+							<small class="form-text text-muted"><center>Le titre du produit qui séra vu par les clients.<br>Il doit comporter la marque, la couleur, le type de produit</center></small>
+						</div> <!-- form-group end.// -->
+						<div class="form-group">
+							<label for="desc">Description</label>
+							{% if form.description %}
+							<textarea class="form-control" name="description" rows="4" id="desc" required >{{ form.description }}</textarea>
+							{% else %}
+							<textarea class="form-control" name="description" rows="4" id="desc" required placeholder="Polo Gris Hugo Boss
+Taille: L, XL, XXL
+Couleur: Gris, blanc, Rouge
+Matière: Coton"></textarea>
+							{% endif %}
+							<small class="form-text text-muted"><center>La description du produit doit comporter des informations telles que les caractéristiques, la couleur, la marque, le modèle, les tailles disponibles, ...<br> Revenez à la ligne après chaque ajout</center></small>
+						</div>
+						<div class="form-group">
+							<label for="cat">Catégorie</label>
+							<select id="cat" class="form-control" name="categorie" required>
+								<option>Choisir</option>
+								{% for categorie in categories %}
+									<option value="{{ categorie.cle }}">{{ categorie.nom }}</option>
+								{% endfor %}
+							</select>
+						</div> <!-- form-group end.// -->
+						<div class="form-row">
+							<div class="form-group col-md-6">
+							  <label for="prix">Prix</label>
+							  <input value="{{ form.prix_vendeur }}" name="prix_vendeur" id="prix" type="number" class="form-control" required min="0">
+							  <small class="form-text text-muted"><center>C'est le prix que vous allez recevoir après la vente du produit. La commission n'est pas incluse.</center></small>
+							</div> <!-- form-group end.// -->
+							<div class="form-group col-md-6">
+							  <label for="qte">Quantite</label>
+							  <input value="{{ form.quantite }}" name="quantite" id="qte" type="number" class="form-control" required min="0">
+							  <small class="form-text text-muted"><center>La quantite de ce produit que vous posséder.</center></small>
+							</div> <!-- form-group end.// -->
+						</div> <!-- form-row.// -->
+						<div class="form-group">
+							<label for="img">Image du produit</label>
+							<input id="img" class="form-control" type="file" name="images" multiple="multiple" required >
+							<small class="form-text text-muted"><center>L'image du produit ne doit en aucun cas comporter des informations telles que le nom du vendeur ou son numéro de telephone. Sinon le produit sera supprimé et vous risquez d'avoir des sanctions</center></small>
+						</div>
+					    <div class="form-group mt-3">
+					        <button type="submit" class="btn btn-success btn-block"> Ajouter le produit </button>
+					    </div> <!-- form-group// -->      
+					                                              
+					</form>
+					<hr>
+					<p class="text-center"><a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-danger">Annuler l'ajout du produit</a></p>
+				</article> <!-- card-body end .// -->
+			</div> <!-- card.// -->
+	</section>
+</main>
+{% endblock %}

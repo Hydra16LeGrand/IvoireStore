@@ -1,0 +1,360 @@
+{% load static %}
+{% load mes_filtres %}
+{% if message %}
+  <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+      <center>{{ message }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+  </div>
+{% endif %}
+{% if message_success %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <center>{{ message_success }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+  </div>
+{% endif %}
+<!DOCTYPE HTML>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="max-age=604800" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>IvoireStore</title>
+
+	<link href="{% static 'images/mon_logo.png' %}" rel="shortcut icon" type="image/x-icon">
+
+	<link rel="icon" type="image/png"  href="{% static 'images/mon_logo.png' %}" />
+
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
+
+	<!-- Bootstrap4 files-->
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+	<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+	<!-- Font awesome 5 -->
+	<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+
+	<!-- custom style -->
+	<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+	<link href="{% static 'css/responsive.css' %}" rel="stylesheet" media="only screen and (max-width: 1200px)" />
+
+	<!-- custom javascript -->
+	<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+
+	<script type="text/javascript">
+	/// some script
+
+	// jquery ready start
+	$(document).ready(function() {
+		// jQuery code
+
+	}); 
+	// jquery end
+	</script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-192320192-1">
+	</script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-192320192-1');
+	</script>
+</head>
+<body>
+
+
+<header class="section-header">
+
+<section class="header-main border-bottom">
+	<div class="container">
+		<div class="row align-items-center" >
+			<div class="col-lg-3 col-sm-4 col-md-4 col-5">
+				<a href="{% url 'accueil' %}" class="brand-wrap">
+					<img height="65px"  src="{% static 'images/mon_logo.png' %}">
+				</a> <!-- brand-wrap.// -->
+			</div>
+
+			<div class="col-lg-4 col-xl-5 col-sm-8 col-md-4 d-none d-md-block">
+
+				
+			</div>
+				<div class="col-lg-5 col-xl-4 col-sm-8 col-md-4 col-7">
+						
+
+				<div class="d-flex justify-content-end">
+					<a href="{% url 'lister_envie' %}" title="Mes souhaits" class="widget-header mr-3">
+						<div class="icon">
+							<i class="icon-sm rounded-circle border fa fa-heart"></i>
+
+							<span class="notify">
+								{{ request|nbre_pu }}
+							</span>
+						</div>
+					</a>
+					<!-- <span class="badge badge-pill badge-danger notify"></span> -->
+				
+					<a href="{% url 'lister_panier' %}" title="Mon panier" class="widget-header mr-3">
+						<div class="icon">
+							<i class="icon-sm rounded-circle border fa fa-shopping-cart"></i>
+
+							<span class="notify">
+								{{ request|nbre_pp }}
+							</span>
+						</div>
+					</a>
+					<!-- <span class="badge badge-pill badge-danger notify"></span> -->
+									
+
+					<div class="widget-header dropdown">
+						{% if request.user.is_authenticated %}
+							<a data-toggle="dropdown" class="dropdown-toggle"  data-offset="20,10" href="{% url 'dashboard_client' %}">
+								
+								<!-- <i class="fa fa-user"></i> -->
+								{% if request|obtenir_profil %}
+								{% endif %}
+								<div class="icon icon-sm">
+									
+									<img class="icon-sm rounded-circle border" src="{{ request|obtenir_profil }}">
+								</div>
+								<span class="sr-only">Compte</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<a class="dropdown-item" href="{% url 'dashboard_client' %}">Dashboard</a>
+								<a class="dropdown-item" href="{% url 'changer_infos_user' %}">Paramètres</a>
+								<a class="dropdown-item" href="{% url 'mes_commandes' %}">Mes commandes</a>
+								<hr class="dropdown-divider">
+								<a class="dropdown-item" href="{% url 'deconnexion' %}?next={{ request.path }}">Déconnexion</a>
+							</div> <!--  dropdown-menu .// -->
+
+						{% else %}
+							<a href="{% url 'dashboard_client' %}" title="Gestion de compte" data-toggle="dropdown" class="dropdown-toggle"  data-offset="20,10">
+								<div class="icon icon-sm">
+									<i class="icon-sm rounded-circle border fa fa-user"></i>
+								</div>
+								<span class="sr-only">Compte</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-left">
+								<a class="dropdown-item" href="{% url 'authentification' %}?next={{ request.path }}">Connexion</a>
+								<a class="dropdown-item" href="{% url 'inscription' %}?next={{ request.path }}"> Inscription</a>
+							</div> <!--  dropdown-menu .// -->
+							
+						{% endif %}
+					</div>
+
+						</div> <!-- widgets-wrap.// -->
+					</div> <!-- col.// -->
+		</div> <!-- row.// -->
+	</div> <!-- container.// -->
+</section> <!-- header-main .// -->
+</header> <!-- section-header.// -->
+<body>
+	<!-- ========================= SECTION PAGETOP ========================= -->
+	<section class="section-pagetop bg-primary">
+	<div class="container">
+		<h2 class="title-page text-white text-center">Boutique de {{ vendeur.user.username }}</h2>
+	</div> <!-- container //  -->
+	</section>
+	<!-- ========================= SECTION INTRO END// ========================= -->
+	<section class="section-content padding-y">
+		<div class="" style="margin-left: 10%; margin-right: 10%;">
+
+			<div class="row">
+				
+				<main class="col-md-12">
+					<br>
+					<header class="border-bottom mb-4 pb-3 text-center">
+							<div class="form-inline text-center">
+								<p>Le lien de votre boutique est: 
+									<span style="color: blue;">https://www.ivoirestore.ci{{ request.path }}</span>
+								</p>
+							</div><hr>
+							<div class="form-inline">
+								<span class="mr-md-auto b">{{ paginator.count }} article(s) trouvé(s) </span>
+								
+							</div>
+					</header><!-- sect-heading -->
+
+					{% for produit in produits %}
+					<article class="card card-product-list">
+						<div class="row no-gutters">
+							<aside class="col-md-3 ">
+								<a href="{% url 'detail_produit' produit.id %}" class="img-wrap">
+									{% if produit.date_ajout|conversion_date_jour < 10 %}
+										<span class="badge badge-danger"> NOUVEAU </span>
+									{% endif %}
+									<img class="img-fluid img-thumbnail" alt="Responsive image" src="{{ produit.image }}">
+								</a>
+							</aside> <!-- col.// -->
+							<div class="col-md-6">
+								<div class="info-main text-center">
+									<a href="{% url 'detail_produit' produit.id %}" class="h5 title"> {{ produit.libelle }}  </a>
+									<p>Categorie : <b>{{ produit.categorie.nom }}</b></p>
+									<p>Vendeur : <b>{{ produit.vendeur.user.username }}</b></p>
+									<!-- <div class="rating-wrap mb-3">
+										<ul class="rating-stars">
+											<li style="width:80%" class="stars-active"> 
+												<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i> 
+											</li>
+											<li>
+												<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i> <i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i> 
+											</li>
+										</ul>
+										<div class="label-rating">7/10</div>
+									</div>  rating-wrap.// -->
+									<p class="text-warning">Quantité restante :<b> {{ produit.quantite }}</b></p>
+									{% if 'temp'|promo > 0 %}
+									<p style="color: green;">Livraison gratuite : <b >{{ 'temp'|promo }} jours restants</b></p><br>
+									{% endif %}
+									<div class="price-wrap text-center">
+										<span class="price h5">{{ produit.prix|parse_int|virgule }} F.CFA </span><br>
+										<del style="color: red;">{{ produit|prix_barre|parse_int|virgule }} F.CFA</del><br>
+										<span class="clignote" style="font-size: 0.9rem;">
+											Economisez {{produit|prix_barre|prix_economie:produit.prix }} F.CFA 
+										</span>		
+										<!-- <del class="price-old"> $198</del> -->
+									</div> <!-- info-price-detail // -->
+								</div> <!-- info-main.// -->
+							</div> <!-- col.// -->
+							<aside class="col-sm-3">
+								<div class="info-aside">
+									<p>
+										<a href="{% url 'detail_produit' produit.id %}" class="btn btn-outline-primary btn-block">
+											<i class="fa fa-eye"></i> Détails 
+										</a>
+										<a href="{% url 'ajouter_envie' produit.id %}?next={{ request.path }}&amp;vendeur={{ vendeur.user.username }}" class="btn btn-outline-secondary btn-block">
+											<i class="fa fa-heart"></i> 
+											<span class="text">Ajouter souhait</span>
+										</a>
+										<a href="{% url 'ajouter_panier' produit.id %}?next={{ request.path }}&amp;vendeur={{vendeur.user.username}}" class="btn btn-warning btn-block">
+											<i class="fa fa-shopping-cart"></i> 
+											<span class="text">Ajouter au panier</span>
+										</a>
+									</p>
+								</div> <!-- info-aside.// -->
+							</aside> <!-- col.// -->
+						</div> <!-- row.// -->
+					</article> <!-- card-product .// -->
+					{% empty %}
+					<article class=" card-product-list">
+						
+						<h1><center>Aucun résultat n'a été trouvé pour votre recherche</center></h1>
+					</article>
+					{% endfor %}
+
+
+
+
+					<div class="row">
+						<nav aria-label="Page de navigation">
+						  <ul class="pagination">
+						  	{% if produits.has_previous %}
+							  	<li class="page-item "><a class="page-link" href="?page=1">Début</a></li>
+							    <li class="page-item "><a class="page-link" href="?page={{ produits.previous_page_number }}">Précédent</a></li>
+						    {% endif %}
+
+						    {% if produits.has_other_pages %}
+						    	<li class="page-item disabled" style="padding: 8px;">
+						    		Page {{ produits.number }}/{{ produits.paginator.number_page }}
+						    	</li>
+						    {% endif %}
+						    {% if produits.has_next %}
+						    <li class="page-item"><a class="page-link" href="?page={{ produits.next_page_number }}">next</a></li>
+						    <li class="page-item"><a class="page-link" href="?page={{ produits.paginator.num_pages }}">Fin</a></li>
+						    {% endif %}
+						  </ul>
+						</nav>
+					</div>
+
+				</main> <!-- col.// -->
+
+			</div>
+
+		</div> <!-- container .//  -->
+	</section>
+<br>
+	<footer class="section-footer border-top">
+		<div class="container">
+			<section class="footer-top padding-y">
+				<div class="row">
+					<aside class="col-md-4" style="text-align: center; margin-top: 30px;">
+						<h6 class="title">Navigation</h6>
+						<ul class="list-unstyled">
+							<li><a href="{% url 'accueil' %}"> Accueil </a></li>
+							<li><a href="{% url 'tous_les_produits' %}"> Produits </a></li>
+							<li><a href="#"> Récherche </a></li>
+							<li><a href="{% url 'contactez-nous' %}"> Contactez-nous </a></li>
+
+							<li><a href="{% url 'dashboard_vendeur' %}"> Vendeur </a></li>
+						</ul>
+
+					</aside>
+					<aside class="col-md-4" style="text-align: center;" >
+						<a href="{% url 'accueil' %}">
+							<img height="130px;" width="300px;" style="padding-left: 0px;" src="{% static 'images/mon_logo.png' %}">
+						</a>
+						<li>
+							<a href="https://www.facebook.com/baradjieshop/" target="_blank"> <i class="fab fa-facebook"></i> Facebook </a>
+						</li>
+						<li>
+							<a href="https://www.instagram.com/baradjise_shop?r=nametag" target="_blank"> <i class="fab fa-instagram"></i> Instagram </a>
+						</li>
+						<li>
+							<a href="https://wa.me/message/JWBLVZHPUB2IO1" target="_blank"> <i class="fab fa-whatsapp"></i> Whatsapp </a>
+						</li>
+						<li style="margin-left: -4px;">
+							<a href="https://t.me/baradjiseshop" target="_blank"> <i class="fab fa-telegram"></i> Telegram </a>
+						</li>
+					</aside>
+					<aside class="col-md" style="text-align: center; margin-top: 30px;">
+						<h6 class="title">Compte</h6>
+						<ul class="list-unstyled">
+							<li> <a href="{% url 'authentification' %}?next={{ request.path }}"> Authentification </a></li>
+							<li> <a href="{% url 'inscription' %}?next={{ request.path }}"> Inscription </a></li>
+							<li> <a href="{% url 'changer_infos_user' %}"> Paramètres de compte </a></li>
+							<li> <a href="{% url 'mes_commandes' %}"> Mes commandes </a></li>
+							<li> <a href="{% url 'lister_panier' %}"> Mon Panier </a></li>
+						</ul>
+					</aside>
+				</div> <!-- row.// -->
+			</section>	<!-- footer-top.// -->
+
+			<section class="footer-bottom border-top row">
+				<div class="col-md-3 col-12" style="text-align: center;">
+					<h6 class="text-muted"> &copy 2021 IvoireStore </h6>
+				</div>
+				<div class="col-md-2 col-12" style="text-align: center;">
+					<h6 class="px-2 mail"><a href="{% url 'contactez-nous' %}">IvoireStore@gmail.com</a></h6>
+				</div>
+				<div class="col-md-4 text-md-right text-muted col-12" style="text-align: center;">
+					<i>Futurs moyens de paiement : </i>
+					<i>Mobile Money </i>
+					<i class="fab fa-lg fa-cc-visa"></i>
+					<i class="fab fa-lg fa-cc-paypal"></i>
+				</div>
+			</section>
+		</div><!-- //container -->
+	</footer>
+<!-- ========================= FOOTER END // ========================= -->
+<style>
+.clignote {
+  color:orange;
+  animation: clignote 1s linear infinite;
+}
+@keyframes clignote {  
+  50% { opacity: 0; }
+}
+</style>
+</body>

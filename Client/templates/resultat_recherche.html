@@ -1,0 +1,186 @@
+{% extends 'static_client.html' %}
+{% load static %}
+{% load mes_filtres %}
+															
+{% block static %}
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg-primary">
+	<div class="container">
+		<h2 class="title-page text-white">Résultat des recherches</h2>
+		<nav>
+		<ol class="breadcrumb text-white">
+		    <li class="breadcrumb-item " ><a href="{% url 'accueil' %}" style="color: white;">Accueil</a></li>
+		    <li class="breadcrumb-item active" style="color: white;" aria-current="page">Résultat recherche</li>
+		</ol>  
+		</nav>
+	</div> <!-- container //  -->
+	</section>
+	<!-- ========================= SECTION INTRO END// ========================= -->
+
+	<!-- ========================= SECTION CONTENT ========================= -->
+	<section class="section-content padding-y">
+		<div class="" style="margin-left: 10%; margin-right: 10%;">
+
+			<div class="row">
+				<aside class="col-md-3">
+					<div class="card">
+						<article class="filter-group">
+							<header class="card-header">
+								<a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
+									<i class="icon-control fa fa-chevron-down"></i>
+									<h6 class="title">Intervalle de prix </h6>
+								</a>
+							</header>
+							<div class="filter-content collapse show" id="collapse_3" style="">
+								<div class="card-body">
+									<!-- <input type="range" class="custom-range" min="0" max="100" name=""> -->
+									{% if requete %}
+									<form method="post" action="{% url 'trier_produits' 'list' requete %}">
+									{% else %}
+									<form method="post" action="{% url 'trier_produits' %}">
+									{% endif %}
+										{% csrf_token %}
+										<div class="form-row">
+												
+												<div class="form-group col-md-6">
+												  <label>Min</label>
+												  <input class="form-control" placeholder="0" min="0" type="number" name="prix_min">
+												</div>
+												<div class="form-group text-right col-md-6">
+												  <label>Max</label>
+												  <input class="form-control" placeholder="100000" min="0" type="number" name="prix_max">
+												</div>
+										</div> <!-- form-row.// -->
+										<button type="submit" class="btn btn-block btn-primary">Filtrer</button>
+									</form>
+								</div><!-- card-body.// -->
+							</div>
+						</article> <!-- filter-group .// -->
+						
+					</div> <!-- card.// -->
+				</aside> <!-- col.// -->
+				<main class="col-md-9">
+					<br>
+					<header class="border-bottom mb-4 pb-3">
+							<div class="row">
+									<div class="col-md-11 col-11 col-sm-11 col-lg-11, col-xl-11">
+										<span class="mr-md-auto b">{{ paginator.count }} article(s) trouvé(s) </span>
+									</div>
+									<div class="col-md col col-sm col-xl col-lg text-right">
+										<div class="btn-group" style="padding-left: 85px;">
+											{% if requete %}
+											<a href="{% url 'trier_produits' 'list' requete %}" class="btn btn-outline-secondary active" data-toggle="tooltip" title="List view"> 
+												<i class="fa fa-bars"></i></a>
+											<a href="{% url 'trier_produits' 'grid' requete %}" class="btn  btn-outline-secondary" data-toggle="tooltip" title="Grid view"> 
+												<i class="fa fa-th"></i></a>
+											{% else %}
+											<a href="{% url 'trier_produits' 'list' %}" class="btn btn-outline-secondary active" data-toggle="tooltip" title="List view"> 
+												<i class="fa fa-bars"></i></a>
+											<a href="{% url 'trier_produits' 'grid' %}" class="btn  btn-outline-secondary" data-toggle="tooltip" title="Grid view"> 
+												<i class="fa fa-th"></i></a>
+											{% endif %}
+										</div>
+									</div>
+							</div>
+					</header><!-- sect-heading -->
+
+					{% for produit in produits %}
+					<article class="card card-product-list">
+						<div class="row no-gutters">
+							<aside class="col-md-3">
+								<a href="{% url 'detail_produit' produit.id %}" class="img-wrap">
+									{% if produit.date_ajout|conversion_date_jour < 10 %}
+										<span class="badge badge-danger"> NOUVEAU </span>
+									{% endif %}
+									<img class="img-fluid img-thumbnail" alt="Image introuvable" src="{{ produit.image }}">
+								</a>
+							</aside> <!-- col.// -->
+							<div class="col-md-6" style="font-size: 0.9rem;">
+								<div class="info-main text-center">
+									<a href="{% url 'detail_produit' produit.id %}" class="h5 title" style="font-size: 1rem;"> {{ produit.libelle }}  </a>
+									<p>Catégorie : <b>{{ produit.categorie.nom }}</b></p>
+									<div class="rating-wrap mb-3">
+										<ul class="rating-stars">
+											<li style="width:80%" class="stars-active text-left"> 
+											{% for l in 'rien'|etoile_random %}
+												<i class="fa fa-star"></i>
+											{% endfor %}
+											</li>
+											<li >
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star"></i> 
+												<i class="fa fa-star"></i>
+												<i class="fa fa-star" style="visibility: hidden;"></i> 
+											</li>
+										</ul>
+									</div> 
+									<p class="text-warning">Quantité restante :<b> {{ produit.quantite }}</b></p>
+									<p>Vendeur : <b>{{ produit.vendeur.user.username }}</b></p>
+									{% if 'temp'|promo > 0 %}
+									<p style="color: green;">Livraison gratuite : <b >{{ 'temp'|promo }} jours restants</b></p><br>
+									{% endif %}
+									<div class="price-wrap text-center">
+										<span class="price h5">{{ produit.prix|parse_int|virgule }} F.CFA </span><br>
+										<del style="color: red;">{{ produit|prix_barre|parse_int|virgule }} F.CFA</del><br>
+										<span class="clignote b" style="font-size: 0.9rem;">
+											Economisez {{produit|prix_barre|prix_economie:produit.prix }} F.CFA 
+										</span>	
+										<!-- <del class="price-old"> $198</del> -->
+									</div> <!-- info-price-detail // -->
+								</div> <!-- info-main.// -->
+							</div> <!-- col.// -->
+							<aside class="col-sm-3">
+								<div class="info-aside">
+									<p>
+										<a href="{% url 'detail_produit' produit.id %}" class="btn btn-outline-primary btn-block">
+											<i class="fa fa-eye"></i> Détails 
+										</a>
+										<a href="{% url 'ajouter_envie' produit.id %}?next={{ request.path }}" class="btn btn-outline-secondary btn-block">
+											<i class="fa fa-heart"></i> 
+											<span class="text">Ajouter souhait</span>
+										</a>
+										<a href="{% url 'ajouter_panier' produit.id %}?next={{ request.path }}" class="btn btn-warning btn-block">
+											<i class="fa fa-shopping-cart"></i> 
+											<span class="text">Ajouter au panier</span>
+										</a>
+									</p>
+								</div> <!-- info-aside.// -->
+							</aside> <!-- col.// -->
+						</div> <!-- row.// -->
+					</article> <!-- card-product .// -->
+					{% empty %}
+					<article class=" card-product-list">
+						
+						<h1><center>Aucun résultat n'a été trouvé pour votre recherche</center></h1>
+					</article>
+					{% endfor %}
+
+					<div class="row">
+						<nav aria-label="Page de navigation">
+						  <ul class="pagination">
+						  	{% if produits.has_previous %}
+							  	<li class="page-item "><a class="page-link" href="?page=1">Début</a></li>
+							    <li class="page-item "><a class="page-link" href="?page={{ produits.previous_page_number }}">Précédent</a></li>
+						    {% endif %}
+						    {% if produits.has_other_pages %}
+						    	<li class="page-item disabled" style="padding: 8px;">
+						    		Page {{ produits.number }}/{{ produits.paginator.number_page }}
+						    	</li>
+						    {% endif %}
+						    {% if produits.has_next %}
+						    <li class="page-item"><a class="page-link" href="?page={{ produits.next_page_number }}">Suivant</a></li>
+						    <li class="page-item"><a class="page-link" href="?page={{ produits.paginator.num_pages }}">Fin</a></li>
+						    {% endif %}
+						  </ul>
+						</nav>
+					</div>
+
+				</main> <!-- col.// -->
+
+			</div>
+
+		</div> <!-- container .//  -->
+	</section>
+{% endblock %}

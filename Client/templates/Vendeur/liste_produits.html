@@ -1,0 +1,103 @@
+{% extends 'static_vendeur.html' %}
+{% load mes_filtres %}
+{% block static_vendeur %}
+<main class="col-md-9">
+
+		<header class="border-bottom mb-4 pb-3">
+			<div class="form">
+				<form action="{% url 'liste_produits_vendeur' %}" method="POST" class="search" >
+					{% csrf_token %}
+					<div class="input-group w-100" style="padding-left: 10px;">
+						<input type="text" class="form-control" placeholder="Rechercher un produit ici" value="{{ requete }}" name="requete" required>
+					    <div class="input-group-append">
+					      <button class="btn btn-primary" type="submit">
+					        <i class="fa fa-search"></i> Chercher
+					      </button>
+					    </div>
+				    </div>
+				</form> <!-- search-wrap .end// --><br>
+				<div class="row">
+					<span class="mr-md-auto text-left col col-md col-sm col-lg col-xl"> {{ paginator.count }} article(s) trouvé(s) </span>	
+					<div class="text-right col col-md col-sm col-lg col-xl ">
+						
+						<a class="btn btn-outline-secondary" href="{% url 'ajouter_produit_vendeur' %}">
+							Ajouter Produit
+						</a>		
+					</div>
+			</div>
+		</header><!-- sect-heading -->
+
+		
+		<div class="row">
+		{% for produit in produits %}
+			<div class="col-md-4 col-lg-4 col-xl-4 col-12">
+				<figure class="card card-product-grid">
+					<div class="img-wrap"> 
+						{% if produit.date_ajout|conversion_date_jour < 10 %}
+							<span class="badge badge-danger"> NOUVEAU </span>
+						{% endif %}
+						<img class="img-fluid img-thumbnail" src="{{ produit.image }}">
+						<a class="btn-overlay" href="{% url 'detail_produit_vendeur' produit.id %}"><i class="fa fa-search-plus"></i> Détails </a>
+					</div> <!-- img-wrap.// -->
+					<figcaption class="info-wrap text-center">
+						<div class="">
+							<a href="{% url 'detail_produit_vendeur' produit.id %}" class="title h5">{{ produit.libelle|truncatechars:30 }}</a>
+							<span class="text-muted">{{ produit.categorie }}</span><br>
+							{% if produit.quantite <= 3 %}
+							<span class="badge-warning"><b>{{ produit.quantite }} pcs restantes</b></span>
+							{% else %}
+							<span style="color: green;" ><b>{{ produit.quantite }} pcs restantes</b></span>
+								{% endif %}
+							<br>
+							{% if produit.status %}
+								<span>Visible ?: <i class="badge-success">Oui</i></span>
+							{% else %}
+								<span>Visible ?: <i class="badge-danger">Non</i></span>
+							{% endif %}
+							<div class="price-wrap mt-2">
+								<span class="price h6"><center>{{ produit.prix_vendeur|parse_int|virgule }} F.CFA</center></span>
+								<!-- <del class="price-old">$1980</del> -->
+							</div> <!-- price-wrap.// -->
+						</div><hr>
+					</figcaption>
+					<div class="row">
+						<div class="col col-sm col-md col-lg col-xl">
+							
+							<a  href="{% url 'modifier_produit_vendeur' produit.id %}" class="btn btn-block btn-outline-primary">
+								<i class="fa fa-pen"></i> &nbsp; Modifier
+							</a>
+						</div>
+						<div class="col col-sm col-md col-lg col-xl">
+							
+							<a href="{% url 'supprimer_produit_vendeur' produit.id %}" class="btn btn-block btn-danger">Supprimer</a>
+						</div>
+					</div>
+				</figure>
+			</div> <!-- col.// -->
+		{% empty %}
+		<div class="col-md">
+			
+			<h1><center>Aucun produit pour le moment</center></h1>
+		</div>
+		{% endfor %}
+		</div>
+
+		<div class="row">
+			<nav aria-label="Page de navigation">
+			  <ul class="pagination">
+			  	{% if produits.has_previous %}
+				  	<li class="page-item "><a class="page-link" href="?page=1">Début</a></li>
+				    <li class="page-item "><a class="page-link" href="?page={{ produits.previous_page_number }}">Précédent</a></li>
+			    {% endif %}
+
+			    <li class="page-item disabled" style="padding: 8px;">Page {{ produits.number }} </li>
+			    {% if produits.has_next %}
+			    <li class="page-item"><a class="page-link" href="?page={{ produits.next_page_number }}">Suivant</a></li>
+			    <li class="page-item"><a class="page-link" href="?page={{ produits.paginator.num_pages }}">Fin</a></li>
+			    {% endif %}
+			  </ul>
+			</nav>
+		</div>
+
+	</main> <!-- col.// -->
+{% endblock %}

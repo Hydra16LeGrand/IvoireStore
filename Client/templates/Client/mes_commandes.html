@@ -1,0 +1,102 @@
+{% extends 'static_client_dashboard.html' %}
+{% load mes_filtres %}
+{% load static %}
+
+{% block static_client_dashboard %}
+<!-- =========================  COMPONENT MYORDER 1 ========================= --> 
+{% for historique in historiques|differentes_commandes %}
+	<article class="card">
+		<header class="card-header" style="background-color: blue; color: white;">
+			<strong class="d-inline-block mr-3">Commande n°: {{ historique.code_cmd }}</strong>
+			<span>Date commande: {{ historique.date_cmd }}</span>
+		</header>
+		<div class="card-body">
+			<div class="row"> 
+				<div class="col-md-8">
+					<h6 class="text-muted">Livrée a </h6>
+					<p>
+						{{ historique.client }} <br>  
+						Phone +225 {{ historique.client|retourner_client:'contact1' }}<br>
+						Email: {{ historique.client|retourner_client:'email' }} <br>
+				    	Adresse: {{ historique.client|retourner_client:'adresse' }}
+			 		</p>
+				</div>
+				<div class="col-md-4">
+					<h6 class="text-muted">Paiement</h6>
+					<span class="text-success">
+						<i class="fa fa-lg ">Cash à la livraison</i>
+					    
+					</span>
+					<p>Sous total: {{ historique.montant_cmd }} F.CFA<br>
+					 Frais d'expédition:  {{ historique.frais_livraison }} F.CFA <br> 
+					 <span class="b">Total:  {{ historique.montant_cmd|add:historique.frais_livraison }} F.CFA </span>
+					</p>
+				</div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		<div class="container">
+			<div class="tracking-wrap">
+				<div class="step active">
+					<div class="icon"> 
+						<i class="icon fa fa-check"></i> 
+					</div>
+					<span class="text">Commande confirmée</span>
+				</div> <!-- step.// -->
+				{% if historique.livreur %}
+					<div class="step active">
+						<span class="icon"> <i class="icon fa fa-user"></i> </span>
+						<span class="text"> Réccuperée par le coursier</span>
+					</div> <!-- step.// -->
+					<div class="step active">
+						<span class="icon"> <i class="icon fa fa-truck"></i> </span>
+						<span class="text"> En chemin </span>
+					</div> <!-- step.// -->
+				{% else %}
+					<div class="step">
+						<span class="icon"> <i class="icon fa fa-user"></i> </span>
+						<span class="text"> Réccuperée par le coursier </span>
+					</div> <!-- step.// -->
+					<div class="step">
+						<span class="icon"> <i class="icon fa fa-truck"></i> </span>
+						<span class="text"> En chemin </span>
+					</div> <!-- step.// -->
+				{% endif %}
+				{% if historique.status_livraison == 'faite' %}
+					<div class="step active">
+						<span class="icon"> <i class="icon fa fa-box"></i> </span>
+						<span class="text">Arrivée à destination</span>
+					</div> <!-- step.// -->
+				{% else %}
+					<div class="step">
+						<span class="icon"> <i class="icon fa fa-box"></i> </span>
+						<span class="text">Arrivée à destination</span>
+					</div> <!-- step.// -->
+				{% endif %}
+			</div><br><br>
+		</div>
+	<div class="table-responsive">
+		<table class="table table-hover">
+			{% for his in historique.num_cmd|reccup_produit_cmd %}
+			<tr>
+				<td width="65">
+					<img src="{% reccup_image_produit_cmd his.libelle his.categorie his.prix_vendeur his.prix %}" class="img-xs border">
+				</td>
+				<td> 
+					<p class="title mb-0"> {{ his.libelle }} </p>
+					<var class="price text-muted">{{ his.prix }} F.CFA x {{ his.quantite }} pièce(s)</var>
+				</td>
+				<td> Vendeur <br> {{ his.vendeur }} </td>
+				
+			</tr>
+					
+			{% endfor %}
+		</table>
+	</div> <!-- table-responsive .end// -->
+</article> <!-- order-group.// --> <br><br>
+{% empty %}
+				<article class="card card-body mb-3">
+					<tr><h1><center>Aucune commande pour le moment</center></h1></tr>
+				</article>
+{% endfor %}
+<!-- =========================  COMPONENT MYORDER 1 END.// ========================= --> 
+{% endblock %}

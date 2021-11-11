@@ -1,0 +1,65 @@
+{% extends 'static_client_dashboard.html' %}
+{% load static %}
+
+{% block static_client_dashboard %}
+	<article class="card mb-3">
+			<div class="card-body">
+				
+				<figure class="icontext">
+						<div class="icon">
+							<a href="{{ client.profil }}"><img class="rounded-circle img-sm border" src="{{ client.profil }}"></a>
+						</div>
+						<div class="text">
+							<strong> {{ client.user.last_name }} </strong> <br> 
+							{{ client.user.email }} <br> 
+						</div>
+				</figure>
+				<hr>
+				<p>
+					<i class="fa fa-map-marker text-muted"></i> &nbsp; Mon adresse
+					 <br>
+					{{client.adresse }}
+					<a href="{% url 'changer_infos_user' %}" class="btn-link"> Modifier</a>
+				</p>
+
+				
+
+				<article class="card-group">
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_cmd }}</h5>
+							<span>Commande(s)</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_produit_panier }}</h5>
+							<span>Dans le panier</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ nbre_souhait }}</h5>
+							<span>Souhait(s)</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ att_livr }}</h5>
+							<span>En attente</span>
+						</div>
+					</figure>
+					<figure class="card bg">
+						<div class="p-3">
+							 <h5 class="card-title">{{ livree }}</h5>
+							<span>Article(s) livré(s)</span>
+						</div>
+					</figure>
+				</article>
+				
+
+			</div> <!-- card-body .// -->
+		</article> <!-- card.// -->
+
+		
+{% endblock %}

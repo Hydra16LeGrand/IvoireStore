@@ -1,0 +1,84 @@
+{% extends 'static_vendeur.html' %}
+{% load mes_filtres %}
+{% block static_vendeur %}
+<main class="col-md-9">
+	<div class="card">
+		<div class="row no-gutters ">
+			<aside class="col-sm-6 col-12 col-md-6 col-lg-6 col-xl-6">
+				
+				<!-- ================== COMPONENT SLIDER  BOOTSTRAP  ==================  --><br>
+				<div id="carousel1_indicator" class="slider-home-banner carousel slide" data-ride="carousel">
+				  <ol class="carousel-indicators">
+		    		<li data-target="#carousel1_indicator" data-slide-to="0" class="active"></li>
+				  	{% for i in produit.imageproduit_set.all|taille_detail %}
+			   			<li data-target="#carousel1_indicator" data-slide-to="{{ i }}"></li>
+				   	{% endfor %}
+				  </ol>
+				  <div class="carousel-inner text-center">
+				    <div class="carousel-item active">
+				      <img height="10%" class="border img-fluid img-thumbnail" width="100%" src="{{ produit.image }}" alt="First slide"> 
+				    </div>
+				    {% for img in produit.imageproduit_set.all %}
+					    <div class="carousel-item">
+					      <img height="10%" width="100%" class="border img-fluid img-thumbnail" src="{{ img.image }}" alt="Second slide">
+					    </div>
+				    {% endfor %}
+				  <a class="carousel-control-prev" href="#carousel1_indicator" role="button" data-slide="prev">
+				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Précédent</span>
+				  </a>
+				  <a class="carousel-control-next" href="#carousel1_indicator" role="button" data-slide="next">
+				    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Suivant</span>
+				  </a>
+				</div> 
+				<!-- ==================  COMPONENT SLIDER BOOTSTRAP end.// ==================  .// -->	
+			</aside>
+			<main class="col-sm-6">
+				<article class="content-body">
+					<h2 class="title">{{ produit.libelle }}</h2>
+					<h5 class="text-muted">Description</h5>
+					<p>{{ produit.description }}.</p>
+					<ul class="list-normal cols-one">
+						<li>Categorie: {{ produit.categorie.nom }} </li>
+						<li>{{ produit.quantite }} pc(s) restante(s) </li>
+						<li>Prix de revente: {{ produit.prix|parse_int|virgule }}</li>
+						{% if produit.status %}
+							<li>Visibilite: Visible</li>
+						{% else %}
+							<li>Visibilite: Non-Visible</li>
+						{% endif %}
+						<li>Date de creation du produit: {{ produit.date_ajout }}</li>
+					</ul>
+
+					<div class="h3 mb-4"> 
+						<var class="price h4">Prix: {{ produit.prix_vendeur|parse_int|virgule }} F.CFA</var> 
+					</div> <!-- price-wrap.// -->
+					<form  action="{% url 'ajouter_image_produit' produit.id %}"  method="post" enctype="multipart/form-data">
+						{% csrf_token %}
+							<div class="form-group">
+								<label for="img"></label>
+								<input class="form-control" id="img" type="file" name="images" multiple="multiple" required>
+							</div> <!-- col.// -->
+							<div class="form-group text-center" style="margin-right: 5px;">
+								<input id="bouton" class="btn btn-success" type="submit" value="Ajouter des images">
+							</div>
+					</form>
+				</article> <!-- product-info-aside .// -->
+			</main> <!-- col.// -->
+		</div> <!-- row.// -->
+	</div> <!-- card.// -->
+</main>
+
+<style type="text/css">
+	#bouton {
+		padding: 10px;
+		color: white;
+		background-color: #009578;
+		border: 2px solid #000;
+		border-radius: 5px;
+		cursor: pointer;
+	}
+</style>
+<!-- ============================ COMPONENT 2 END .// ================================= -->
+{% endblock %}

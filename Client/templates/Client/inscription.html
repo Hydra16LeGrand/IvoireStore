@@ -1,0 +1,151 @@
+{% load static %}
+
+{% if message %}
+  <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+      <center>{{ message }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+  </div>
+{% endif %}
+{% if message_success %}
+	<div class="alert alert-success alert-dismissible fade show" role="alert">
+      <center>{{ message_success }}</center>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	    <span aria-hidden="true">&times;</span>
+	  </button>
+  </div>
+{% endif %}
+<html lang="fr">
+<head>
+	<title>Inscription client</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="author" content="Bootstrap-ecommerce by Vosidiy M.">
+	<!-- jQuery -->
+	<script src="{% static 'js/jquery-2.0.0.min.js' %}" type="text/javascript"></script>
+	<link rel="icon" type="image/png"  href="{% static 'images/mon_logo.png' %}" />
+	<!-- Bootstrap4 files-->
+	<script src="{% static 'js/bootstrap.bundle.min.js' %}" type="text/javascript"></script>
+	<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css"/>
+
+	<!-- Fonticons -->
+	<link href="{% static 'fonts/fontawesome/css/all.min.css' %}" type="text/css" rel="stylesheet">
+	<link href="{% static 'fonts/feathericons/css/iconfont.css' %}" rel="stylesheet" type="text/css" />
+	<link href="{% static 'fonts/material-icons/css/materialdesignicons.css' %}" rel="stylesheet" type="text/css" />
+
+	<!-- custom style -->
+	<link href="{% static 'css/ui.css' %}" rel="stylesheet" type="text/css"/>
+	<link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+
+	<!-- custom javascript -->
+	<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+</head>
+<body class="bg">
+	<section class="section-content padding-y">
+		<div class="container">
+			<div class="card mx-auto" style="max-width:600px;">
+				<article class="card-body">
+					<header class="mb-4">
+						<h4 class="card-title"><ins><center>Inscription Client</center></ins></h4>
+					</header>
+					<form method="post" action="{% url 'inscription' %}">
+						{% csrf_token %}
+						<input type="hidden" name="next" value="{{ redirect_to }}" />
+						<small class="form-text text-muted">
+							<center style="color:green;">Remarque: Le symbole * devant un champ signifie qu'il est obligatoire.</center>
+						</small><br>
+						<div class="form-row">
+							<div class="form-group col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+								<label for="nom">Nom Complet *</label>
+							  	<input value="{{ form.nom }}" id="nom" name="nom" type="text" class="form-control" placeholder="" required>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+								<label for="adresse">Adresse *</label>
+							  	<input value="{{ form.adresse }}" id="adresse" name="adresse" type="text" class="form-control" required>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="form-group col-md-12 col-12 col-sm-12 col-lg-12 col-xl-12">
+								<label for="num">Numéro de télephone *</label>
+								<div class="row">
+									<div class=" col-3 col-md-3 text-center" style="margin-top: 5px;">
+								  		<span class="h5" >+225</span>
+								  	</div>
+								  	<div class="col col-md">
+								  		<input pattern="[0-9]{10}" value="{{ form.username }}" id="num" name="username" type="text" class="form-control" required>
+								  	</div>
+							  	</div>
+							</div>
+						</div>
+						<small class="form-text text-muted">
+							<center style="color: orange;">Numéros de téléphone à 10 chiffres.</center><br>
+							<center style="color: orange;">Rmq : Vous utiliserai ce numéro pour vous connecter.</center>
+						</small><br>
+						<div class="form-row">
+							
+							<div class="form-group col-12 col-md-6">
+								<label for="mdp">Mot de passe *</label>
+							    <input id="mdp" name="mdp" class="form-control" type="password" required minlength="6">
+							    <input type="checkbox" onclick="Afficher1()"> Afficher
+							    <small class="form-text text-muted"><center style="color: orange;">Au moins 6 caractères.</center></small>
+							</div>
+							<div class="form-group col-12 col-md-6">
+								<label for="cmdp">Repétez *</label>
+							    <input id="cmdp" name="c_mdp" class="form-control" type="password" required minlength="6">
+							    <input type="checkbox" onclick="Afficher2()"> Afficher
+							    <small class="form-text text-muted"><center style="color: orange;">Au moins 6 caractères.</center></small>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block" onClick="checkPw()"> Inscription  </button>
+					</form>
+					<div class="card-footer text-center">
+					<p class="text-center">Avez vous un compte? Connectez-vous <a href="{% url 'authentification' %}">Connexion</a></p>
+					</div>
+					<div class="card-footer text-center">
+		            	Êtes vous un vendeur? <a href="{% url 'inscription_vendeur' %}">Inscrivez-vous ici</a>
+	              	</div>
+				</article>
+			</div>
+		</div>
+	</section>
+	<script>
+  function Afficher1(){ 
+        var input = document.getElementById("mdp"); 
+        if (input.type === "password")
+      { 
+       input.type = "text"; 
+      } 
+      else
+      { 
+        input.type = "password"; 
+      } 
+    } 
+
+    function Afficher2(){ 
+        var input = document.getElementById("cmdp"); 
+        if (input.type === "password")
+      { 
+       input.type = "text"; 
+      } 
+      else
+      { 
+        input.type = "password"; 
+      } 
+    } 
+
+    function checkPw(){
+    	mdp = document.getElementById("mdp");
+		cmdp = document.getElementById("cmdp");
+
+
+		if (mdp.value != cmdp.value){
+			mdp.setCustomValidity("Les mots de passe ne correspondent pas");
+		}else{
+			mdp.setCustomValidity("");
+		}
+    }
+</script>
+</body>

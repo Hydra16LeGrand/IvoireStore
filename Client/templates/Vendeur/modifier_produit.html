@@ -1,0 +1,73 @@
+{% extends 'static_vendeur.html' %}
+{% load mes_filtres %}
+{% block static_vendeur %}
+<main class="col-md-9" style="margin-top: 15px;">
+<section class="section-content">
+			<div class="card mx-auto" style="max-width:600px;">
+				<article class="card-body">
+					<header class="mb-4">
+						<h4 class="card-title"><ins><center>Modification de produit</center></ins></h4>
+					</header>
+					<form enctype="multipart/form-data" action="{% url 'modifier_produit_vendeur' produit.id %}" method="post">
+						{% csrf_token %}
+						<div class="form-group">
+							<label>Nom du produit</label>
+							<input name="libelle" type="text" class="form-control" placeholder="Polo Gris Hugo Boss" required value="{{ produit.libelle }}">
+							<small class="form-text text-muted"><center>Le titre du produit qui séra vu par les clients.<br>Il doit comporter la marque, la couleur, le type de produit</center></small>
+						</div> <!-- form-group end.// -->
+						<div class="form-group">
+							<label for="desc">Description</label>
+							<textarea class="form-control" name="description" rows="4" id="desc" required placeholder="Polo Gris Hugo Boss
+Taille: L, XL, XXL
+Couleur: Gris, blanc, Rouge
+Matière: Coton">{{produit.description}}</textarea>
+							<small class="form-text text-muted"><center>La description du produit doit comporter des informations telles que les caractéristiques, la couleur, la marque, le modèle, les tailles disponibles, ...<br> Revenez à la ligne après chaque ajout</center></small>
+						</div>
+						<div class="form-group">
+							<label for="cat">Catégorie</label>
+							<select id="cat" class="form-control" name="categorie" required>
+								<option value="{{ produit.categorie.cle }}">{{ produit.categorie.nom }}</option>
+								{% for categorie in categories %}
+									<option value="{{ categorie.cle }}">{{ categorie.nom }}</option>
+								{% endfor %}
+							</select>
+						</div> <!-- form-group end.// -->
+						<div class="form-row">
+							<div class="form-group col-md-6">
+							  <label for="prix">Prix</label>
+							  <input name="prix_vendeur" id="prix" type="number" value="{{ produit.prix_vendeur }}" class="form-control" required min="0">
+							  <small class="form-text text-muted"><center>C'est le prix que vous allez recevoir après la vente du produit. La commission n'est pas incluse.</center></small>
+							</div> <!-- form-group end.// -->
+							<div class="form-group col-md-6">
+							  <label for="qte">Quantite</label>
+							  <input name="quantite" id="qte" type="number" class="form-control" required min="0" value="{{ produit.quantite }}">
+							  <small class="form-text text-muted"><center>La quantite de ce produit que vous posséder.</center></small>
+							</div> <!-- form-group end.// -->
+						</div> <!-- form-row.// -->
+					    <div class="form-group form-check">
+					    	<center>
+					    	<label style="padding-right: 30px;" class="form-check-label" for="status"><h5>Visibilité</h5></label>
+							{% if produit.status %}
+								<input class="form-check-input" type="checkbox" name="status" checked="True" id="status">
+							{% else %}
+								<input class="form-check-input" type="checkbox" name="status" id="status">
+							{% endif %}
+							<small class="form-text text-muted"><center>A décocher si vous souhaiter que les clients ne voyent pas le produit au lieu de le supprimé. Cela est éfficace si vous etes en rupture de stock. </center></small>
+						</center>
+					    </div>                                   
+						<div class="form-group">
+							<label for="img">Image du produit</label>
+							<input id="img" class="form-control" type="file" name="image" value="{{ produit.image }}">
+							<small class="form-text text-muted"><center>L'image du produit ne doit en aucun cas comporter des informations telles que le nom du vendeur ou son numéro de telephone. Sinon le produit sera supprimé et vous risquez d'avoir des sanctions</center></small>
+						</div>
+					    <div class="form-group mt-3">
+					        <button type="submit" class="btn btn-success btn-block"> Modifier le produit </button>
+					    </div> <!-- form-group// -->      
+					</form>
+					<hr>
+					<p class="text-center"><a href="{% url 'liste_produits_vendeur' %}" class="btn btn-outline-danger">Annuler la modification </a></p>
+				</article> <!-- card-body end .// -->
+			</div> <!-- card.// -->
+	</section>
+</main>
+{% endblock %}

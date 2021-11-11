@@ -1,0 +1,180 @@
+{% extends 'static_client.html' %}
+{% load static %}
+{% load mes_filtres %}
+
+{% if message %}
+<script type="text/javascript">alert('{{ message }}')</script>
+{% endif %}
+{% block static %}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg-primary">
+<div class="container">
+	<h2 class="title-page text-white">Mon compte</h2>
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<aside class="col-md-3">
+		<ul class="list-group">
+			{% if active == 'dashboard' %}
+			<a class="list-group-item active" href="{% url 'dashboard_client' %}"> Aperçu du compte </a>
+			<a class="list-group-item" href="{% url 'lister_envie' %}"> Mes souhaits </a>
+			<a class="list-group-item" href="{% url 'lister_panier' %}"> Mon panier </a>
+			<a class="list-group-item" href="{% url 'mes_commandes' %}"> Mes commandes </a>
+			<a class="list-group-item" href="{% url 'changer_infos_user' %}"> Paramètre </a>
+			{% elif active == "souhait" %}
+			<a class="list-group-item" href="{% url 'dashboard_client' %}"> Aperçu du compte </a>
+			<a class="list-group-item active" href="{% url 'lister_envie' %}"> Mes souhaits </a>
+			<a class="list-group-item" href="{% url 'lister_panier' %}"> Mon panier </a>
+			<a class="list-group-item" href="{% url 'mes_commandes' %}"> Mes commandes </a>
+			<a class="list-group-item" href="{% url 'changer_infos_user' %}"> Paramètre </a>
+			{% elif active == 'panier' %}
+			<a class="list-group-item" href="{% url 'dashboard_client' %}"> Aperçu du compte </a>
+			<a class="list-group-item" href="{% url 'lister_envie' %}"> Mes souhaits </a>
+			<a class="list-group-item active" href="{% url 'lister_panier' %}"> Mon panier </a>
+			<a class="list-group-item" href="{% url 'mes_commandes' %}"> Mes commandes </a>
+			<a class="list-group-item" href="{% url 'changer_infos_user' %}"> Paramètre </a>
+			{% elif active == 'commande' %}
+			<a class="list-group-item" href="{% url 'dashboard_client' %}"> Aperçu du compte </a>
+			<a class="list-group-item" href="{% url 'lister_envie' %}"> Mes souhaits </a>
+			<a class="list-group-item" href="{% url 'lister_panier' %}"> Mon panier </a>
+			<a class="list-group-item active" href="{% url 'mes_commandes' %}"> Mes commandes </a>
+			<a class="list-group-item" href="{% url 'changer_infos_user' %}"> Paramètre </a>
+			{% elif active == 'parametre' %}
+			<a class="list-group-item" href="{% url 'dashboard_client' %}"> Aperçu du compte </a>
+			<a class="list-group-item" href="{% url 'lister_envie' %}"> Mes souhaits </a>
+			<a class="list-group-item" href="{% url 'lister_panier' %}"> Mon panier </a>
+			<a class="list-group-item" href="{% url 'mes_commandes' %}"> Mes commandes </a>
+			<a class="list-group-item active" href="{% url 'changer_infos_user' %}"> Paramètre </a>
+			{% endif %}
+		</ul><br>
+			<a class="btn btn-light btn-block" href="{% url 'deconnexion' %}"> 
+				<i class="fa fa-power-off"></i> 
+				<span class="text">Déconnexion</span> 
+			</a><br>
+	</aside> <!-- col.// -->
+	<main class="col-md-6">
+<!-- ============================ COMPONENT CART ================================= -->
+		<div class="row">
+				{% for pp in panier_produit %}
+
+				<article class="card card-body mb-3">
+					<div class="row align-items-center">
+						<div class="col-md-9 col-9 col-sm-9 col-xs-9 col-xl-9">
+							<figure class="itemside">
+								<div class="aside">
+									<a href="{{ pp.produit.image }}">
+										<img src="{{ pp.produit.image }}" class="border img-fluid img-thumbnail img-md"></div>
+									</a>
+								<figcaption class="info">
+									<span class="text-muted">{{ pp.produit.categorie.nom }}</span>
+									<a href="#" class="title"> {{ pp.produit.libelle|truncatechars:20 }} </a>
+								</figcaption>
+							</figure> 
+						</div> <!-- col.// -->
+						<div class="col-md-3 col-3 col-sm-3 col-xs-3 col-xl-3">
+							<!-- <div class="input-group input-spinner"> -->
+							<div class="row">
+								<form method="post" action="{% url 'modifier_panier' pp.produit.id %}">
+									{% csrf_token %}
+									<div class="form-group col-12 text-center">
+										<label for="qte" class="">Quantité </label>
+									</div>
+									<div class="form-group col-12">
+										<input id="qte" name="quantite" type="number" class="form-control"  value="{{ pp.quantite }}" max="{{ pp.produit.quantite }}" min="1">
+									</div>
+									<div class="col-12">
+										
+										<input type="submit" class="form-control btn btn-outline-primary" title="Changer la quantité voulue" value="changer">
+									</div>
+								</form>
+							</div><hr>
+							<!-- </div>  --><!-- input-group.// -->
+						</div> <!-- col.// -->
+						<div class="col">
+							<div class="price">Prix : <span class="h5">{{ pp.produit.prix|parse_int|virgule }} F.CFA </span></div>
+						</div>
+						<div class="col flex-grow-0 text-right">
+							<a href="{% url 'supprimer_panier' pp.produit.pk %}" title="Supprimer de la liste" class="btn btn-outline-danger"> <i class="fa fa-times"></i></a>
+						</div>
+					</div> <!-- row.// -->
+				</article> <!-- card .// -->
+				{% empty %}
+					<article class="card card-body mb-3 text-center">
+						<p><h1>Le panier est vide</h1></p>
+						<a class="btn btn-outline-success" href="{% url 'trier_produits' %}"> Faites vos achats ici </a>
+					</article>				
+				{% endfor %}
+		</div>
+	</main>
+			<aside class="col-md-3">
+				<div class="card">
+				<div class="card-body">
+					<form action="{% url 'finaliser_commande' %}" method="post">
+						{% csrf_token %}
+							<label for="adresse_livraison"><h6>Adresse de livraison</h6></label>
+						<div class="input-group mb-3">
+							<select class="form-control" id="adresse_livraison" name="adresse_livraison" value="abidjan" required>
+								<option onclick="choix_abidjan()" value="abidjan">Abidjan</option>
+								<option onclick="choix_interieur()" value="interieur">Interieur du pays</option>
+							</select>
+							
+						</div>
+						<dl class="dlist-align">
+						  Sous total:
+						  <dd style="text-align: right;">{{ panier_produit|sous_total|parse_int }} F.CFA</dd>
+						</dl>
+						<dl class="dlist-align">
+						  <dt>Frais:</dt>
+						  <dd class="text-right text-danger"><span id="_frais"></span> F.CFA</dd>
+						</dl>
+						<dl class="dlist-align">
+						  Grand Total:
+						  <dd class="text-right text-dark"><strong><span id="total">{{ panier_produit|sous_total|parse_int }}</span> FCFA</strong></dd>
+						</dl>
+
+						<hr>
+						{% if gain >= 1500 %}
+							<button type="submit" class="btn btn-outline-warning btn-block">Finaliser la commande</button>
+						{% else %}
+							<center><p class="btn btn-danger">Cette commande est trop peu pour être livrée</p></center>
+						{% endif %}
+					</form>
+					<p class="small my-3 text-muted"><center>S'il y a des spécifications à faire telle que la taille de la chaussure, veuillez nous le dire lorsque nous vous contacterons</center></p>
+				</div> <!-- card-body.// -->
+					<center>
+					<a href="{% url 'tous_les_produits' %}" ><button class="btn btn-primary btn-large" style="width: 90%;">Poursuivre les achats</button> </a>
+				</center>
+				&nbsp;
+				</div> <!-- card.// -->
+			</aside> <!-- col.// -->
+		</main> <!-- col.// -->
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<script type="text/javascript">
+	
+	var frais = 0;
+	document.getElementById("_frais").innerHTML = 0;
+	function choix_abidjan(){
+		frais = 0;
+		document.getElementById("_frais").innerHTML = frais;
+		document.getElementById("total").innerHTML = parseInt("{{ panier_produit|sous_total }}") + frais;
+	}
+	function choix_interieur(){
+		frais = 2000;
+		document.getElementById("_frais").innerHTML = frais;
+		document.getElementById("total").innerHTML = parseInt("{{ panier_produit|sous_total }}") + frais;
+	}
+
+
+</script>
+<!-- ============================ COMPONENT CART END .// ================================= -->
+{% endblock %}

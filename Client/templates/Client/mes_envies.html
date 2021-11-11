@@ -1,0 +1,36 @@
+{% extends 'static_client_dashboard.html' %}
+{% load mes_filtres %}
+{% load static %}
+
+{% block static_client_dashboard %}
+		<article class="card">
+			<div class="card-body">
+
+				<div class="row">
+					{% for ep in envie_produit %}
+					<div class="col-md-6">
+						<figure class="itemside mb-4">
+							<div class="aside">
+								<a href="{{ ep.produit.image }}">
+									<img src="{{ ep.produit.image }}" class="border img-fluid img-thumbnail img-md">
+								</a>
+							</div>
+							<figcaption class="info">
+								<a href="{% url 'detail_produit' ep.produit.id %}" class="title lead">{{ ep.produit.libelle|truncatechars:28 }}</a>
+								<p class="price mb-2">{{ ep.produit.prix|parse_int|virgule }} F.CFA</p>
+								<a href="{% url 'ajouter_panier' ep.produit.pk %}?next={{ request.path }}" class="btn btn-primary btn-sm"> Ajouter au panier </a>
+								<a href="{% url 'supprimer_envie' ep.pk %}?next={% url 'supprimer_envie' ep.pk %}" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" title="" data-original-title="Supprimer des souhaits"> <i class="fa fa-times"></i> </a>
+							</figcaption>
+						</figure>
+					</div> <!-- col.// -->
+					{% empty %}
+					<article class="card card-body mb-3 text-center">
+						<p><h1>Aucun article pour le moment</h1></p>
+						<a class="btn btn-outline-success" href="{% url 'trier_produits' %}"> Ajoutez-en</a>
+					</article>	
+					{% endfor %}
+				</div> <!-- row .//  -->
+
+			</div> <!-- card-body.// -->
+		</article>
+{% endblock %}
